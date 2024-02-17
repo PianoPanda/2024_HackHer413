@@ -105,6 +105,8 @@ function scalePixelMatrix(matrix, newWidth, newHeight) {
                     // console.log("coord: ", outerWidth + innerWidth, ", ", outerHeight + innerHeight)
 
                     // console.log("matrix value: ", matrix[outerHeight + innerHeight][outerWidth + innerWidth])
+                    // width -> column, height -> row
+                    // A_ij = A_hw
                     sum += matrix[outerHeight + innerHeight][outerWidth + innerWidth];
                 }
             }
