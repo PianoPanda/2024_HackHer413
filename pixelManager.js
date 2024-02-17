@@ -64,14 +64,16 @@ export function png2PixelMatrix(framePath) {
         const row = [];
         for (let x = 0; x < width; x++) {
             const [red, green, blue] = image.getPixel(x, y);
-            const isBlack = red === 0 && green === 0 && blue === 0;
-            row.push(isBlack ? '0' : '1');
+            const isBlackish = red <= 128 && green <= 128 && blue <= 128; 
+            row.push(isBlackish ? '0' : '1'); //0 is black, 1 is white
         }
         binaryMatrix.push(row.join(''));
     }
 
     return binaryMatrix;
 }
+
+export 
 
 // Example usage:
 //const framePath = 'miku.png'; // Replace 'yingyang.png' with the path to your image file
