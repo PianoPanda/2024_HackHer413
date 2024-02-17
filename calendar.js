@@ -4,10 +4,7 @@ import { google } from 'googleapis';
 const CALENDAR_ID="43389c50be563ec14c5b7d28a65e3fc8081345a7c8c84cc8f225fa54f4139ee0@group.calendar.google.com"
 const BASE_DATE = new Date("2024-02-11")
 
-
-writeBlock(undefined, 0, { column: 0, start: 1, end: 2, order: 0, color: true })
-
-async function writeBlock(calendar, frame, { column, start, end, order, color }) {
+async function writeBlock(frame, { column, start, end, order, color }, callback) {
 
   const t_start = new Date(BASE_DATE.getTime())
   t_start.setDate(t_start.getDate() + frame * 7 + column)
@@ -15,7 +12,7 @@ async function writeBlock(calendar, frame, { column, start, end, order, color })
 
   const t_end = new Date(t_start.getTime())
   t_end.setMinutes(t_end.getMinutes() + (end - start) * 15)
-  t_start.setMinutes(t_start.getMinutes() + order)
+  t_start.setSeconds(t_start.getSeconds() + order)
 
   const s_start = t_start.toISOString().substring(0, 19)
   const s_end = t_end.toISOString().substring(0, 19)
@@ -32,21 +29,45 @@ async function writeBlock(calendar, frame, { column, start, end, order, color })
     },
   }
   if (color) event.colorID = "8"
-  
-  await calendar.events.insert({
-    "calendarId": CALENDAR_ID,
-    "resource": event
-  })
+  return callback(event)
 }
 
-function dostuff(auth) {
+async function writeFrame(calendar, blocks, frame) {
 
-  const calendar = google.calendar({version: 'v3', auth});
-  writeBlock(calendar, undefined, {})
+  const promises = []
+
+  for (const block of blocks) { 
+    promises.push(writeBlock(calendar, frame, block, async event => {
+      return calendar.events.insert({
+        "calendarId": CALENDAR_ID,
+        "resource": event
+      })
+    }))
+  }
+
+  await Promise.allSettled(promises)
+  console.log(`finsihed frame ${frame}`)
 
 }
 
+function writeFrameToICSs(blocks, frame) {
+  let white = ""
+  let black = ""
 
-// authorize().then(dostuff)
+  for (const block of blocks) {
+    writeBlock(frame, block, event => {
+      let stuff = "BEGIN:VEVENT\n"
+      const start = new Date(event.start.dateTime).getTime()
+      const end = new Date(event.end.dateTime).getTime()
+      stuff += `DTSTAMP:${start}\n`
+      stuff += `DTSTART:${start}\n`
+      stuff += `DTEND:${end}\n`
+      stuff += `SUMMART:${event.summary}\n`
+      stuff += "END:VEVENT\n"
+      if (event.colorId) black += stuff
+      else white += stuff
+    })
+  }
 
-
+  return [white, black]
+}

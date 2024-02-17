@@ -1,7 +1,7 @@
 const dir = "splitVideo";
 import * as fs from 'node:fs';
-import { png2PixelMatrix, scalePixelMatrix } from "./pixelManager.js";
-import {SparateTo7Days} from "./scaleMatrix.js";
+import { png2PixelMatrix, scalePixelMatrix, printMatrix } from "./pixelManager.js";
+import { SeperateTo7Days } from "./scaleMatrix.js";
 
 var matrixBeforResize = [[]];
 var matrixAfterResize = [[]];
@@ -9,19 +9,19 @@ var matrixAfterResize = [[]];
 const HEIGHT = 70;
 const WIDTH = 112;
 
-fs.readdir(dir, (err, files) =>{
-        if(err){
-            console.log("error is "+ err);
-        }
-        //files = [dir + files[0]];
-        // files.forEach((frame, index)=>{
-        //     matrixBeforResize = png2PixelMatrix(dir+frame).join('\n');
-        //     matrixAfterResize = scalePixelMatrix(matrixBeforResize, WIDTH, HEIGHT);
-        //     let {Mon, Tue, Wed, Thu, Fri, Sat, Sun} = SparateTo7Days(matrixAfterResize);
-        // })
-        let frame = files[0]; 
-        matrixBeforResize = png2PixelMatrix(dir+'/'+frame);
-        matrixAfterResize = scalePixelMatrix(matrixBeforResize, WIDTH, HEIGHT);
-        let {Mon, Tue, Wed, Thu, Fri, Sat, Sun} = SparateTo7Days(matrixAfterResize);
-    }
-)
+fs.readdir(dir, files => {
+
+  let files = [files[84]]; 
+  
+  files.forEach((file, i) => {
+    const matrixBeforResize = png2PixelMatrix(dir+'/'+file);
+    const matrixAfterResize = scalePixelMatrix(matrixBeforResize, WIDTH, HEIGHT);
+    const res = SeperateTo7Days(matrixAfterResize)
+
+    res.forEach(
+      
+    )
+
+    
+  })
+})

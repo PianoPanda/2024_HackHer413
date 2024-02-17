@@ -73,8 +73,6 @@ export function png2PixelMatrix(framePath) {
     return binaryMatrix;
 }
 
-export 
-
 // Example usage:
 //const framePath = 'miku.png'; // Replace 'yingyang.png' with the path to your image file
 // const framePath = 'yingyang.png';

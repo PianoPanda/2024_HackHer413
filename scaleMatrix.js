@@ -43,7 +43,24 @@ function sliceMatrix(input, width, height){
     return input;
 }
 
-export function SparateTo7Days(matrix){
+export function SeperateTo7Days(matrix) {
+    const mkarr=(n,f)=>Array(n).fill(0).map(f)
+    
+    const res = mkarr(7,()=>mkarr(70,()=>[]))
+    
+    for (let i=0; i<70; i++) {
+        for (let j=0; j<7; j++) {
+            for (let k=0; k<15; k++) {
+                res[j][i].push(matrix[i][j*16+k])
+            }
+        }
+    }
+    return res
+}
+
+
+
+/*export function SparateTo7Days(matrix){
     assert(matrix.length === 70 && matrix[0].length === 112);
 
     let n = 0;
@@ -78,4 +95,4 @@ export function SparateTo7Days(matrix){
 
     return {Mon, Tue, Wed, Thu, Fri, Sat, Sun};
 
-}
+}**/
