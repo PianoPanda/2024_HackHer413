@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/PianoPanda/2024_HackHer413/issues"
   },
-  "homepage": "https://github.com/PianoPanda/2024_HackHer413#readme"
+  "homepage": "https://github.com/PianoPanda/2024_HackHer413#readme",
+  "dependencies": {
+    "pngjs": "^7.0.0"
+  }
 }

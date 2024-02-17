@@ -1,51 +1,78 @@
-const fs = require('fs');
+const { PNG } = require("pngjs");
+const fs = require("fs");
+const assert = require("assert");
+
+class Image {
+    constructor(width, height, data) {
+        assert(width > 0 && width < 5000, "Invalid width. Width must be between 0 and 5000.");
+        assert(height > 0 && height < 5000, "Invalid height. Height must be between 0 and 5000.");
+        assert(data.length === width * height * 4, "Invalid data. Data length does not match dimensions.");
+
+        this.width = width;
+        this.height = height;
+        this.data = data;
+        this.rowSize = this.width * 4;
+    }
+
+    getPixel(x, y) {
+        this.assertCoordinatesInBounds(x, y);
+        const offset = this.getOffset(x, y);
+
+        return [this.data[offset], this.data[offset + 1], this.data[offset + 2]];
+    }
+
+    assertCoordinatesInBounds(x, y) {
+        assert(Number.isInteger(x) && Number.isInteger(y), "Invalid coordinates. x and y must be integers.");
+        assert(x >= 0 && x < this.width, "x is out of bounds.");
+        assert(y >= 0 && y < this.height, "y is out of bounds.");
+    }
+
+    getOffset(x, y) {
+        return y * this.rowSize + x * 4;
+    }
+}
+
+function loadImageFromFile(filePath) {
+    assert(filePath.endsWith(".png"), "Only `.png` files are supported.");
+
+    if (!fs.existsSync(filePath)) {
+        throw new Error(`Unable to locate file: \`${filePath}\``);
+    }
+    fs.accessSync(filePath, fs.constants.R_OK);
+
+    const png = PNG.sync.read(fs.readFileSync(filePath));
+    return new Image(png.width, png.height, Uint8ClampedArray.from(png.data));
+}
 
 function png2PixelMatrix(framePath) {
     return new Promise((resolve, reject) => {
-        fs.readFile(framePath, (err, data) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-
-            // Assuming PNG format, you might need to adjust if it's a different format
-            const header = data.toString('hex', 0, 8);
-            if (header !== '89504e470d0a1a0a') {
-                reject(new Error('File is not in PNG format'));
-                return;
-            }
-
-            // Parse image dimensions
-            const width = data.readUInt32BE(16);
-            const height = data.readUInt32BE(20);
-            const imageSize = { width, height }; // Object to store image size
+        try {
+            const image = loadImageFromFile(framePath);
+            const { width, height } = image;
 
             const binaryMatrix = [];
             for (let y = 0; y < height; y++) {
                 const row = [];
                 for (let x = 0; x < width; x++) {
-                    // Calculate index of RGBA values
-                    const index = (y * width + x) * 4 + 8; // RGBA values start from index 8
-                    const red = data[index];
-                    const green = data[index + 1];
-                    const blue = data[index + 2];
-                    // Check if pixel is white (255, 255, 255) or not
-                    const isWhite = red === 255 && green === 255 && blue === 255;
-                    row.push(isWhite ? '1' : '0'); // Convert to '0' or '1'
+                    const [red, green, blue] = image.getPixel(x, y);
+                    const isBlack = red === 0 && green === 0 && blue === 0;
+                    row.push(isBlack ? '0' : '1');
                 }
-                binaryMatrix.push(row.join('')); // Join each row into a string
+                binaryMatrix.push(row.join(''));
             }
 
-            resolve({ binaryMatrix: binaryMatrix.join('\n'), imageSize }); // Join rows with newline character
-        });
+            resolve({ binaryMatrix: binaryMatrix, imageSize: { width, height } });
+        } catch (error) {
+            reject(error);
+        }
     });
 }
 
 // Example usage:
-const framePath = 'yingyang.png'; // Replace 'miku.png' with the path to your image file
+const framePath = 'yingyang.png'; // Replace 'yingyang.png' with the path to your image file
 png2PixelMatrix(framePath).then(({ binaryMatrix, imageSize }) => {
-    // console.log('Image Size:', imageSize.width, 'x', imageSize.height); // Print the size of the image
-    console.log(binaryMatrix); // Print the binary matrix
+    console.log('Image Size:', imageSize.width, 'x', imageSize.height); // Print the size of the image
+    console.log(binaryMatrix.join('\n')); // Print the binary matrix row by row
 }).catch(error => {
     console.error('Error:', error);
 });
