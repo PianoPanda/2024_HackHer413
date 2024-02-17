@@ -1,13 +1,13 @@
 class Block{
-	column;
-	startTime;
-	endTime;
-	order;
+    column;
+    start;
+    end;
+    order;
     color;
-    constructor(column, startTime, endTime, order, color){
+    constructor(column, start, end, order, color) {
         this.column = column;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.start = start;
+        this.end = end;
         this.order = order;
         this.color = color;
     }
