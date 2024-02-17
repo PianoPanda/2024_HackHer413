@@ -68,6 +68,31 @@ const binaryMatrix = png2PixelMatrix(frame);
 console.log(binaryMatrix); // Print the binary matrix to console
 
 
-function scalePixelMatrix(data, newWidth, newHeight) {
+function scalePixelMatrix(matrix, newWidth, newHeight) {
+    oldWidth = matrix[0].length;
+    oldHeight = matrix.length;
 
+    // ignores some pixel, no biggie
+    scaledWidth = oldWidth / newWidth;
+    scaledHeight = oldHeight / newHeight;
+
+    binaryMatrix = []
+    row = -1
+
+    for (outerWidth = 0; outerWidth < oldWidth; outerWidth += scaledWidth) {
+        for (outerHeight = 0; outerHeight < oldHeight; outerHeight += scaledHeight) {
+            sum = 0;
+            binaryMatrix[++row] = []
+
+            for (innerWidth = 0; innerWidth < scaledWidth; innerWidth++) {
+                for (innerHeight = 0; innerHeight < scaledHeight; innerHeight++) {
+                    sum += matrix[outerWidth + innerWidth][outerHeight + innerHeight];
+                }
+            }
+            average = sum / (scaledHeight * scaledWidth);
+            binaryMatrix[row].push(average);
+        }
+    }
+
+    return binaryMatrix;
 }
