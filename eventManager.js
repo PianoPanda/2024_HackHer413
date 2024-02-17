@@ -11,6 +11,9 @@ class Block{
         this.order = order;
         this.color = color;
     }
+    toString(){
+        return `${this.color ? "b" : "w"}${this.start}-${this.end}`
+    }
 }
 
 /**
@@ -18,7 +21,7 @@ class Block{
  * @returns {Block[]}
  * NOTE: `Block.column` is set to `0` for all blocks and start/end times are just integers starting at `0`
  */
-function buildCalendarColumn(matrix){
+export function buildCalendarColumn(matrix){
     /**
      * optimizes a row!
      * @param {boolean[]} rawRow 

@@ -19,9 +19,11 @@
   "homepage": "https://github.com/PianoPanda/2024_HackHer413#readme",
   "dependencies": {
     "@google-cloud/local-auth": "^2.1.0",
+    "bun": "^1.0.27",
     "googleapis": "^105.0.0",
     "jest": "^29.7.0",
-    "pngjs": "^7.0.0"
+    "pngjs": "^7.0.0",
+    "puppeteer": "^22.1.0"
   },
   "type": "module"
 }
