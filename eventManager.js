@@ -1,11 +1,9 @@
 class Block{
-    column;
     start;
     end;
     order;
     color;
-    constructor(column, start, end, order, color) {
-        this.column = column;
+    constructor(start, end, order, color) {
         this.start = start;
         this.end = end;
         this.order = order;
@@ -73,7 +71,7 @@ export function buildCalendarColumn(matrix){
         if(!isEqual){
             // Push old block
             vBlockData.forEach((color, order) =>{
-                output.push(new Block(0, vBlockStart, vBlockEnd, order, color));
+                output.push(new Block(vBlockStart, vBlockEnd, order, color));
             })
             // Initialize a new block
             vBlockStart = vBlockEnd;
@@ -83,7 +81,7 @@ export function buildCalendarColumn(matrix){
     })
     // Push the final block
     vBlockData.forEach((color, order) =>{
-        output.push(new Block(0 /** TODO */, vBlockStart, vBlockEnd, order, color));
+        output.push(new Block(vBlockStart, vBlockEnd, order, color));
     })
     return output;
 }
