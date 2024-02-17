@@ -5,31 +5,38 @@ const CALENDAR_ID="43389c50be563ec14c5b7d28a65e3fc8081345a7c8c84cc8f225fa54f4139
 const BASE_DATE = new Date("2024-02-11")
 
 
+writeBlock(undefined, 0, { column: 0, start: 1, end: 2, order: 0, color: true })
 
 async function writeBlock(calendar, frame, { column, start, end, order, color }) {
 
-  const time = new Date(BASE_DATE.getTime())
-  time.setDate(time.getDate() + frame * 7 + column)
-  time.setMinutes()
+  const t_start = new Date(BASE_DATE.getTime())
+  t_start.setDate(t_start.getDate() + frame * 7 + column)
+  t_start.setMinutes(8 * 60 + start * 15)
+
+  const t_end = new Date(t_start.getTime())
+  t_end.setMinutes(t_end.getMinutes() + (end - start) * 15)
+  t_start.setMinutes(t_start.getMinutes() + order)
+
+  const s_start = t_start.toISOString().substring(0, 19)
+  const s_end = t_end.toISOString().substring(0, 19)
 
   const event =  {
     "summary": "a",
     "start": {
-      "dateTime": "2024-02-17T09:00:00",
+      "dateTime": s_start,
       "timeZone": "America/New_York"
     },
     "end": {
-      "dateTime": "2024-02-17T09:00:00",
+      "dateTime": s_end,
       "timeZone": "America/New_York"
     },
   }
   if (color) event.colorID = "8"
   
-  // await calendar.events.insert({
-    // "calendarId": CALENDAR_ID,
-    // "resource": event
-  // })
-  console.log("HI")
+  await calendar.events.insert({
+    "calendarId": CALENDAR_ID,
+    "resource": event
+  })
 }
 
 function dostuff(auth) {
@@ -40,6 +47,6 @@ function dostuff(auth) {
 }
 
 
-authorize().then(dostuff)
+// authorize().then(dostuff)
 
 
