@@ -93,24 +93,24 @@ export function scalePixelMatrix(matrix, newWidth, newHeight) {
     for (let y = 0; y < newHeight; y++) {
         let row = [];
         for (let x = 0; x < newWidth; x++) {
-            let sum = 0;
+            let sum = [0, 0, 0];
             let count = 0;
             for (let innerY = y * scaledHeight; innerY < (y + 1) * scaledHeight; innerY++) {
                 for (let innerX = x * scaledWidth; innerX < (x + 1) * scaledWidth; innerX++) {
-
                     if (innerY < oldHeight && innerX < oldWidth) { // Check bounds
-                        sum += matrix[innerY][innerX];
+                        sum[0] += matrix[innerY][innerX][0];
+                        sum[1] += matrix[innerY][innerX][1];
+                        sum[2] += matrix[innerY][innerX][2];
                         count++;
-
                     }
                 }
             }
-            let average = sum / count;
-            row.push(average >= 0.5 ? 1 : 0);
+            let average = [sum[0] / count, sum[1] / count, sum[2] / count];
+            // TODO map through Steven's function
+            row.push(average);
         }
         binaryMatrix.push(row);
     }
-
     return binaryMatrix;
 }
 
