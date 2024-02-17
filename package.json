@@ -1,0 +1,19 @@
+{
+  "name": "badcalendar",
+  "version": "1.0.0",
+  "description": "Bad apple in google calendar",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PianoPanda/2024_HackHer413.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PianoPanda/2024_HackHer413/issues"
+  },
+  "homepage": "https://github.com/PianoPanda/2024_HackHer413#readme"
+}
