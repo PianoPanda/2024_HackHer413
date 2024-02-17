@@ -4,7 +4,6 @@
   "description": "Bad apple in google calendar",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
     "format": "prettier --config .prettierrc --write src/",
     "start": "node src/main.js"
   },

@@ -81,10 +81,12 @@ console.log(png2PixelMatrix(framePath).join('\n'));
 
 // width = # of col, height = # of row
 export function scalePixelMatrix(matrix, newWidth, newHeight) {
+    console.log("testing matrix", matrix)
+    console.log("index 0:", matrix[0])
     let oldWidth = matrix[0].length;
     let oldHeight = matrix.length;
-    // console.log("length", oldHeight)
-    // console.log("width", oldWidth)
+    console.log("length", oldHeight)
+    console.log("width", oldWidth)
 
     // ignores some pixel, no biggie
     let scaledWidth = Math.floor(oldWidth / newWidth);
@@ -94,32 +96,55 @@ export function scalePixelMatrix(matrix, newWidth, newHeight) {
     let binaryMatrix = [[]]
     let row = 0
 
-    for (let outerWidth = 0; outerWidth < oldWidth; outerWidth += scaledWidth) {
-        for (let outerHeight = 0; outerHeight < oldHeight; outerHeight += scaledHeight) {
+    for (let outerHeight = 0; outerHeight < oldHeight; outerHeight += scaledHeight) {
+        for (let outerWidth = 0; outerWidth < oldWidth; outerWidth += scaledWidth) {
             let sum = 0;
-            
-            for (let innerWidth = 0; innerWidth < scaledWidth; innerWidth++) {
-                for (let innerHeight = 0; innerHeight < scaledHeight; innerHeight++) {
-                    // console.log("outerWidth:", outerWidth)
-                    // console.log("innerWidth:", innerWidth)
-                    // console.log("outerHeight:", outerHeight)
-                    // console.log("innerHeight:", innerHeight)
-                    // console.log("coord: ", outerWidth + innerWidth, ", ", outerHeight + innerHeight)
 
-                    // console.log("matrix value: ", matrix[outerHeight + innerHeight][outerWidth + innerWidth])
-                    // width -> column, height -> row
-                    // A_ij = A_hw
-                    sum += matrix[outerHeight + innerHeight][outerWidth + innerWidth];
+            for (let innerHeight = outerHeight; innerHeight < outerHeight + scaledHeight; innerHeight++) {
+                for (let innerWidth = outerWidth; innerWidth < outerWidth + scaledWidth; innerWidth++) {
+                    sum += matrix[innerHeight][innerWidth];
                 }
             }
-            let average = sum / (scaledHeight * scaledWidth);
+            let average = sum / (scaledHeight * scaledWidth)
+            //let largestPossibleScaledWidth = oldWidth - (oldWidth % newWidth)
             if (binaryMatrix[row].length == newWidth) {
-                row += 1;
-                binaryMatrix[row] = []
-            }
-            binaryMatrix[row].push(average);
-            // console.log(binaryMatrix)
+							row += 1;
+							binaryMatrix[row] = [];
+						}
+            binaryMatrix[row].push(average >= 0.5 ? 1 : 0);
         }
     }
+
+    // for (outerWidth = 0; outerWidth < oldWidth; outerWidth += scaledWidth) {
+    //     for (outerHeight = 0; outerHeight < oldHeight; outerHeight += scaledHeight) {
+    //         sum = 0;
+            
+    //         for (innerWidth = 0; innerWidth < scaledWidth; innerWidth++) {
+    //             for (innerHeight = 0; innerHeight < scaledHeight; innerHeight++) {
+    //                 // console.log("outerWidth:", outerWidth)
+    //                 // console.log("innerWidth:", innerWidth)
+    //                 // console.log("outerHeight:", outerHeight)
+    //                 // console.log("innerHeight:", innerHeight)
+    //                 // console.log("coord: ", outerWidth + innerWidth, ", ", outerHeight + innerHeight)
+
+    //                 // console.log("matrix value: ", matrix[outerHeight + innerHeight][outerWidth + innerWidth])
+
+    //                 // width -> column, height -> row
+    //                 // A_ij = A_hw
+    //                 sum += matrix[outerHeight + innerHeight][outerWidth + innerWidth];
+    //             }
+    //         }
+    //         average = sum / (scaledHeight * scaledWidth);
+    //         if (binaryMatrix[row].length == newWidth) {
+    //             row += 1;
+    //             binaryMatrix[row] = []
+    //         }
+    //         binaryMatrix[row].push(average);
+    //         // console.log(binaryMatrix)
+    //     }
+    // }
     return binaryMatrix;
 }
+
+
+//module.exports = {scalePixelMatrix, png2PixelMatrix};
