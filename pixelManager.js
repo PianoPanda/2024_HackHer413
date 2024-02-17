@@ -112,10 +112,9 @@ export function scalePixelMatrix(matrix, newWidth, newHeight) {
     return binaryMatrix;
 }
 
-export function printPic(matrix) {
-    for (let i = 0; i < matrix[0].length; i++) {
-        for (let j = 0; j < matrix.length; j++) {
-            console.log()
-        }
-    }
+
+export function printMatrix(matrix) {
+    matrix.forEach(row => {
+    console.log(row.join(''));
+    });
 }
