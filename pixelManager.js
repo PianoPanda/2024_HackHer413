@@ -1,6 +1,6 @@
-const { PNG } = require("pngjs");
-const fs = require("fs");
-const assert = require("assert");
+import pngjs from 'pngjs'
+import fs from 'fs';
+import assert from 'assert'
 
 class Image {
     constructor(width, height, data) {
@@ -51,11 +51,11 @@ function loadImageFromFile(filePath) {
     }
     fs.accessSync(filePath, fs.constants.R_OK);
 
-    const png = PNG.sync.read(fs.readFileSync(filePath));
+    const png = pngjs.PNG.sync.read(fs.readFileSync(filePath));
     return new Image(png.width, png.height, Uint8ClampedArray.from(png.data));
 }
 
-function png2PixelMatrix(framePath) {
+export function png2PixelMatrix(framePath) {
     const image = loadImageFromFile(framePath);
     const { width, height } = image;
 
@@ -80,7 +80,7 @@ const framePath = 'yingyang.png';
 console.log(png2PixelMatrix(framePath).join('\n'));
 
 // width = # of col, height = # of row
-function scalePixelMatrix(matrix, newWidth, newHeight) {
+export function scalePixelMatrix(matrix, newWidth, newHeight) {
     oldWidth = matrix[0].length;
     oldHeight = matrix.length;
     // console.log("length", oldHeight)
@@ -123,6 +123,3 @@ function scalePixelMatrix(matrix, newWidth, newHeight) {
     }
     return binaryMatrix;
 }
-
-module.exports = scalePixelMatrix;
-module.exports = png2PixelMatrix;
