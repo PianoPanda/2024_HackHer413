@@ -52,14 +52,18 @@ export function SparateTo7Days(matrix){
     for (let x = 0; x<70; x++){
         Day.push([]);
     }
-    for (let n = 0; n < 112; n++) {
-        let dayIndex = n % 7;
-        for (let m = 0; m < 70; m++) {
-            Week[dayIndex].push(matrix[m][n]);
+    while(n<=112){
+        for (let m = 0 ; m< 70 ; m++){
+            Day[m].push(matrix[m][n%16]);
+        }
+        n++;
+        if(n%16 === 0){
+            Week.push(Day);
+            Day = [];
         }
     }
 
-    //Week.pop();
+    Week.pop();
 
     let Mon = Week[0];
     let Tue = Week[1];
@@ -69,7 +73,7 @@ export function SparateTo7Days(matrix){
     let Sat = Week[5];
     let Sun = Week[6];
 
-    console.log(Week[0][0].length);
+    console.log(Week[0].length);
     //console.log(Mon);
 
     return {Mon, Tue, Wed, Thu, Fri, Sat, Sun};
