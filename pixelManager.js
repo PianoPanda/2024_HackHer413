@@ -1,71 +1,54 @@
-// function png2PixelMatrix(frame) {
-//     const img = new Image();
-//     img.src = frame;
-//     const canvas = document.createElement('canvas');
-//     canvas.width = img.width;
-//     canvas.height = img.height;
+const fs = require('fs');
 
-//     const ctx = canvas.getContext('2d');
-//     ctx.drawImage(img, 0, 0);
+function png2PixelMatrix(framePath) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(framePath, (err, data) => {
+            if (err) {
+                reject(err);
+                return;
+            }
 
-//     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-//     const pixelData = imageData.data;
+            // Assuming PNG format, you might need to adjust if it's a different format
+            const header = data.toString('hex', 0, 8);
+            if (header !== '89504e470d0a1a0a') {
+                reject(new Error('File is not in PNG format'));
+                return;
+            }
 
-//     const rgbMatrix = [];
-//     for (let i = 0; i < canvas.height; i++) {
-//         const row = [];
-//         for (let j = 0; j < canvas.width; j++) {
-//             const index = (i * canvas.width + j) * 4;
-//             const red = pixelData[index];
-//             const green = pixelData[index + 1];
-//             const blue = pixelData[index + 2];
-//             row.push([red, green, blue]);
-//         }
-//         rgbMatrix.push(row);
-//     }
+            // Parse image dimensions
+            const width = data.readUInt32BE(16);
+            const height = data.readUInt32BE(20);
+            const imageSize = { width, height }; // Object to store image size
 
-//     return rgbMatrix;
-// }
+            const binaryMatrix = [];
+            for (let y = 0; y < height; y++) {
+                const row = [];
+                for (let x = 0; x < width; x++) {
+                    // Calculate index of RGBA values
+                    const index = (y * width + x) * 4 + 8; // RGBA values start from index 8
+                    const red = data[index];
+                    const green = data[index + 1];
+                    const blue = data[index + 2];
+                    // Check if pixel is white (255, 255, 255) or not
+                    const isWhite = red === 255 && green === 255 && blue === 255;
+                    row.push(isWhite ? '1' : '0'); // Convert to '0' or '1'
+                }
+                binaryMatrix.push(row.join('')); // Join each row into a string
+            }
 
-// // // Example usage:
-// // const frame = 'path_to_your_image.png';
-// // console.log(pixelMatrix); // Print the RGB matrix to console
-
-function png2PixelMatrix(frame) {
-    const img = new Image();
-    img.src = frame;
-    const canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
-
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0);
-
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const pixelData = imageData.data;
-
-    const binaryMatrix = [];
-    for (let i = 0; i < canvas.height; i++) {
-        const row = [];
-        for (let j = 0; j < canvas.width; j++) {
-            const index = (i * canvas.width + j) * 4;
-            const red = pixelData[index];
-            const green = pixelData[index + 1];
-            const blue = pixelData[index + 2];
-            // Check if pixel is white (255, 255, 255) or not
-            const isWhite = red === 255 && green === 255 && blue === 255;
-            row.push(isWhite ? 1 : 0);
-        }
-        binaryMatrix.push(row);
-    }
-
-    return binaryMatrix;
+            resolve({ binaryMatrix: binaryMatrix.join('\n'), imageSize }); // Join rows with newline character
+        });
+    });
 }
 
 // Example usage:
-const frame = "./miku.jpeg"; // path to image file
-const binaryMatrix = png2PixelMatrix(frame);
-console.log(binaryMatrix); // Print the binary matrix to console
+const framePath = 'yingyang.png'; // Replace 'miku.png' with the path to your image file
+png2PixelMatrix(framePath).then(({ binaryMatrix, imageSize }) => {
+    // console.log('Image Size:', imageSize.width, 'x', imageSize.height); // Print the size of the image
+    console.log(binaryMatrix); // Print the binary matrix
+}).catch(error => {
+    console.error('Error:', error);
+});
 
 
 function scalePixelMatrix(matrix, newWidth, newHeight) {
