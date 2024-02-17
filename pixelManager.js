@@ -45,37 +45,28 @@ function loadImageFromFile(filePath) {
 }
 
 function png2PixelMatrix(framePath) {
-    return new Promise((resolve, reject) => {
-        try {
-            const image = loadImageFromFile(framePath);
-            const { width, height } = image;
+    const image = loadImageFromFile(framePath);
+    const { width, height } = image;
 
-            const binaryMatrix = [];
-            for (let y = 0; y < height; y++) {
-                const row = [];
-                for (let x = 0; x < width; x++) {
-                    const [red, green, blue] = image.getPixel(x, y);
-                    const isBlack = red === 0 && green === 0 && blue === 0;
-                    row.push(isBlack ? '0' : '1');
-                }
-                binaryMatrix.push(row.join(''));
-            }
-
-            resolve({ binaryMatrix: binaryMatrix, imageSize: { width, height } });
-        } catch (error) {
-            reject(error);
+    const binaryMatrix = [];
+    for (let y = 0; y < height; y++) {
+        const row = [];
+        for (let x = 0; x < width; x++) {
+            const [red, green, blue] = image.getPixel(x, y);
+            const isBlack = red === 0 && green === 0 && blue === 0;
+            row.push(isBlack ? '0' : '1');
         }
-    });
+        binaryMatrix.push(row.join(''));
+    }
+
+    return binaryMatrix;
 }
 
 // Example usage:
-const framePath = 'yingyang.png'; // Replace 'yingyang.png' with the path to your image file
-png2PixelMatrix(framePath).then(({ binaryMatrix, imageSize }) => {
-    console.log('Image Size:', imageSize.width, 'x', imageSize.height); // Print the size of the image
-    console.log(binaryMatrix.join('\n')); // Print the binary matrix row by row
-}).catch(error => {
-    console.error('Error:', error);
-});
+//const framePath = 'miku.png'; // Replace 'yingyang.png' with the path to your image file
+const framePath = 'yingyang.png';
+//const framePath = 'undertale.png';
+console.log(png2PixelMatrix(framePath).join('\n'));
 
 // width = # of col, height = # of row
 function scalePixelMatrix(matrix, newWidth, newHeight) {
