@@ -82,7 +82,7 @@ const framePath = 'yingyang.png';
 console.log(png2PixelMatrix(framePath).join('\n'));
 
 // width = # of col, height = # of row
-export function scalePixelMatrix(matrix, newWidth, newHeight) {
+export function scalePixelMatrix(matrix, newHeight, newWidth) {
     let oldWidth = matrix[0].length;
     let oldHeight = matrix.length;
 
@@ -95,12 +95,13 @@ export function scalePixelMatrix(matrix, newWidth, newHeight) {
         for (let j = 0; j < newWidth; j++) {
             let sum = 0;
             let count = 0;
-            
+
+            // inner grid of pixels
             for (let innerI= i * scaledHeight; innerI < (i + 1) * scaledHeight; innerI++) {
                 for (let innerJ = j * scaledWidth; innerJ < (j + 1) * scaledWidth; innerJ++) {
 
                     if (innerJ < oldHeight && innerI < oldWidth) {
-                        sum += matrix[innerJ][innerI];
+                        sum += matrix[innerI][innerJ];
                         count++;
                     }
                 }

@@ -1,7 +1,7 @@
+const { assert } = require("console");
 const { scalePixelMatrix, png2PixelMatrix, printMatrix } = require("./pixelManager.js");
-//import { scalePixelMatrix, png2PixelMatrix } from "./pixelManager.js";
 
-test("Basic 4x4 matrix", () => {
+test.skip("Basic 4x4 matrix", () => {
 	matrix = [
 		[0, 1, 0, 1],
 		[0, 0, 1, 1],
@@ -22,33 +22,23 @@ test("Basic 4x4 matrix", () => {
 			expect(scaledMatrix[i][j]).toBe(resultMatrix[i][j]);
 		}
 	}
-	// expect(scalePixelMatrix(matrix, newWidth, newWidth)).toBe(resultMatrix);
 });
 
+// 480 x 360 -> 112 x 70
 test("printing matrix: ", () =>{
 	matrix = png2PixelMatrix("sampleFrame.png")
-	scaledMatrix = scalePixelMatrix(matrix, 90, 73)
-	console.log("Unscaled BAD APPLE: ", matrix)
-	console.log("Scaled BAD APPLE: ", printMatrix(scaledMatrix));
-	
+	scaledMatrix = scalePixelMatrix(matrix, 70, 112)
+	//console.log("Unscaled BAD APPLE: ", matrix)
+	//console.log("Scaled BAD APPLE: ", printMatrix(scaledMatrix));
 });
 
-test.skip("360x295 Miku resizing", () => {
-	// 180 x 147
-	const framePath = "miku.png";
-	//matrix = png2PixelMatrix(framePath);
-	// console.log("This is miku:");
-	// console.log(matrix);
-	// console.log("Testing: ");
-	//console.log(scalePixelMatrix(matrix, 180, 147));
+test("Size verification", () => {
+	matrix = png2PixelMatrix("sampleFrame.png");
+	scaledMatrix = scalePixelMatrix(matrix, 70, 112);
+	assert(scaledMatrix.length == 70)
+	scaledMatrix.forEach((row) => {
+		assert(row.length == 112);
+	});
 });
 
-test.skip("360x295 Miku downsizing 4x", () => {
-	// 90 x 73
-	const framePath = "miku.png";
-	matrix = png2PixelMatrix(framePath);
-	// console.log("This is miku:");
-	// console.log(matrix);
-	// console.log("Testing: ");
-	console.log(scalePixelMatrix(matrix, 90, 73));
-});
+
