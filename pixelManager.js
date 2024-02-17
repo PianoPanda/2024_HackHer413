@@ -81,25 +81,25 @@ console.log(png2PixelMatrix(framePath).join('\n'));
 
 // width = # of col, height = # of row
 export function scalePixelMatrix(matrix, newWidth, newHeight) {
-    oldWidth = matrix[0].length;
-    oldHeight = matrix.length;
+    let oldWidth = matrix[0].length;
+    let oldHeight = matrix.length;
     // console.log("length", oldHeight)
     // console.log("width", oldWidth)
 
     // ignores some pixel, no biggie
-    scaledWidth = Math.floor(oldWidth / newWidth);
-    scaledHeight = Math.floor(oldHeight / newHeight);
+    let scaledWidth = Math.floor(oldWidth / newWidth);
+    let scaledHeight = Math.floor(oldHeight / newHeight);
 
 
-    binaryMatrix = [[]]
-    row = 0
+    let binaryMatrix = [[]]
+    let row = 0
 
-    for (outerWidth = 0; outerWidth < oldWidth; outerWidth += scaledWidth) {
-        for (outerHeight = 0; outerHeight < oldHeight; outerHeight += scaledHeight) {
-            sum = 0;
+    for (let outerWidth = 0; outerWidth < oldWidth; outerWidth += scaledWidth) {
+        for (let outerHeight = 0; outerHeight < oldHeight; outerHeight += scaledHeight) {
+            let sum = 0;
             
-            for (innerWidth = 0; innerWidth < scaledWidth; innerWidth++) {
-                for (innerHeight = 0; innerHeight < scaledHeight; innerHeight++) {
+            for (let innerWidth = 0; innerWidth < scaledWidth; innerWidth++) {
+                for (let innerHeight = 0; innerHeight < scaledHeight; innerHeight++) {
                     // console.log("outerWidth:", outerWidth)
                     // console.log("innerWidth:", innerWidth)
                     // console.log("outerHeight:", outerHeight)
@@ -112,7 +112,7 @@ export function scalePixelMatrix(matrix, newWidth, newHeight) {
                     sum += matrix[outerHeight + innerHeight][outerWidth + innerWidth];
                 }
             }
-            average = sum / (scaledHeight * scaledWidth);
+            let average = sum / (scaledHeight * scaledWidth);
             if (binaryMatrix[row].length == newWidth) {
                 row += 1;
                 binaryMatrix[row] = []
