@@ -77,32 +77,48 @@ png2PixelMatrix(framePath).then(({ binaryMatrix, imageSize }) => {
     console.error('Error:', error);
 });
 
-
+// width = # of col, height = # of row
 function scalePixelMatrix(matrix, newWidth, newHeight) {
     oldWidth = matrix[0].length;
     oldHeight = matrix.length;
+    // console.log("length", oldHeight)
+    // console.log("width", oldWidth)
 
     // ignores some pixel, no biggie
-    scaledWidth = oldWidth / newWidth;
-    scaledHeight = oldHeight / newHeight;
+    scaledWidth = Math.floor(oldWidth / newWidth);
+    scaledHeight = Math.floor(oldHeight / newHeight);
 
-    binaryMatrix = []
-    row = -1
+
+    binaryMatrix = [[]]
+    row = 0
 
     for (outerWidth = 0; outerWidth < oldWidth; outerWidth += scaledWidth) {
         for (outerHeight = 0; outerHeight < oldHeight; outerHeight += scaledHeight) {
             sum = 0;
-            binaryMatrix[++row] = []
-
+            
             for (innerWidth = 0; innerWidth < scaledWidth; innerWidth++) {
                 for (innerHeight = 0; innerHeight < scaledHeight; innerHeight++) {
-                    sum += matrix[outerWidth + innerWidth][outerHeight + innerHeight];
+                    // console.log("outerWidth:", outerWidth)
+                    // console.log("innerWidth:", innerWidth)
+                    // console.log("outerHeight:", outerHeight)
+                    // console.log("innerHeight:", innerHeight)
+                    // console.log("coord: ", outerWidth + innerWidth, ", ", outerHeight + innerHeight)
+
+                    // console.log("matrix value: ", matrix[outerHeight + innerHeight][outerWidth + innerWidth])
+                    sum += matrix[outerHeight + innerHeight][outerWidth + innerWidth];
                 }
             }
             average = sum / (scaledHeight * scaledWidth);
+            if (binaryMatrix[row].length == newWidth) {
+                row += 1;
+                binaryMatrix[row] = []
+            }
             binaryMatrix[row].push(average);
+            // console.log(binaryMatrix)
         }
     }
 
     return binaryMatrix;
 }
+
+module.exports = scalePixelMatrix;
