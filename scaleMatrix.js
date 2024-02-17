@@ -1,3 +1,5 @@
+import assert from 'assert';
+
 function scaleMatrix(input, width, height){
     input = sliceMatrix(input);
 
@@ -40,3 +42,57 @@ function sliceMatrix(input, width, height){
     }
     return input;
 }
+
+export function SeperateTo7Days(matrix) {
+    const mkarr=(n,f)=>Array(n).fill(0).map(f)
+    
+    const res = mkarr(7,()=>mkarr(70,()=>[]))
+    
+    for (let i=0; i<70; i++) {
+        for (let j=0; j<7; j++) {
+            for (let k=0; k<15; k++) {
+                res[j][i].push(matrix[i][j*16+k])
+            }
+        }
+    }
+    return res
+}
+
+
+
+/*export function SparateTo7Days(matrix){
+    assert(matrix.length === 70 && matrix[0].length === 112);
+
+    let n = 0;
+    let Week = [[],[],[],[],[],[],[]];
+    let Day = [];
+    for (let x = 0; x<70; x++){
+        Day.push([]);
+    }
+    while(n<=112){
+        for (let m = 0 ; m< 70 ; m++){
+            Day[m].push(matrix[m][n%16]);
+        }
+        n++;
+        if(n%16 === 0){
+            Week.push(Day);
+            Day = [];
+        }
+    }
+
+    Week.pop();
+
+    let Mon = Week[0];
+    let Tue = Week[1];
+    let Wed = Week[2];
+    let Thu = Week[3];
+    let Fri = Week[4];
+    let Sat = Week[5];
+    let Sun = Week[6];
+
+    console.log(Week[0].length);
+    //console.log(Mon);
+
+    return {Mon, Tue, Wed, Thu, Fri, Sat, Sun};
+
+}**/

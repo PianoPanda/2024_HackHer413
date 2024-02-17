@@ -67,19 +67,17 @@ export function png2PixelMatrix(framePath) {
             const isBlackish = red <= 128 && green <= 128 && blue <= 128; 
             row.push(isBlackish ? '0' : '1'); //0 is black, 1 is white
         }
-        binaryMatrix.push(row.join(''));
+        binaryMatrix.push(row);
     }
 
     return binaryMatrix;
 }
 
-export 
-
 // Example usage:
 //const framePath = 'miku.png'; // Replace 'yingyang.png' with the path to your image file
-const framePath = 'yingyang.png';
-//const framePath = 'undertale.png';
-console.log(png2PixelMatrix(framePath).join('\n'));
+// const framePath = 'yingyang.png';
+// //const framePath = 'undertale.png';
+// console.log(png2PixelMatrix(framePath).join('\n'));
 
 // width = # of col, height = # of row
 export function scalePixelMatrix(matrix, newHeight, newWidth) {
