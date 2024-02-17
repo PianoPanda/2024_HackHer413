@@ -1,4 +1,8 @@
 const scalePixelMatrix = require("./pixelManager.js");
+const png2PixelMatrix = require("./pixelManager.js");
+
+// import png2PixelMatrix from "./pixelManager.js";
+// import scalePixelMatrix from "./pixelManager.js";
 
 test("Basic 3x4 matrix", () => {
 	matrix = [
@@ -21,4 +25,14 @@ test("Basic 3x4 matrix", () => {
 		}
 	}
 	// expect(scalePixelMatrix(matrix, newWidth, newWidth)).toBe(resultMatrix);
+});
+
+test("360x295 Miku resizing", () => {
+	// 180 x 147
+	const framePath = "miku.png";
+	matrix = png2PixelMatrix(framePath);
+	console.log("This is miku:");
+	console.log(matrix);
+	console.log("Testing: ");
+	console.log(scalePixelMatrix(matrix, 147, 180));
 });

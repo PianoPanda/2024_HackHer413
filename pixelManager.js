@@ -32,8 +32,19 @@ class Image {
     }
 }
 
+function endsWith(name) {
+    arr = String(name).split(".")
+    if (arr[1] === "png") {
+        //console.log("Wrong file format");
+        return true;
+    }
+    console.log("Wrong file format");
+    return false;
+}
+
 function loadImageFromFile(filePath) {
-    assert(filePath.endsWith(".png"), "Only `.png` files are supported.");
+    //console.log(endsWith(filePath))
+    //assert(endsWith(filePath), "Only `.png` files are supported.");
 
     if (!fs.existsSync(filePath)) {
         throw new Error(`Unable to locate file: \`${filePath}\``);
@@ -110,8 +121,8 @@ function scalePixelMatrix(matrix, newWidth, newHeight) {
             // console.log(binaryMatrix)
         }
     }
-
     return binaryMatrix;
 }
 
 module.exports = scalePixelMatrix;
+module.exports = png2PixelMatrix;
