@@ -26,10 +26,10 @@ test("Basic 4x4 matrix", () => {
 });
 
 test("printing matrix: ", () =>{
-	matrix = png2PixelMatrix("miku.png")
+	matrix = png2PixelMatrix("sampleFrame.png")
 	scaledMatrix = scalePixelMatrix(matrix, 90, 73)
-	console.log("Unscaled MIKU: ", matrix)
-	console.log("Scaled MIKU: ", printMatrix(scaledMatrix));
+	console.log("Unscaled BAD APPLE: ", matrix)
+	console.log("Scaled BAD APPLE: ", printMatrix(scaledMatrix));
 	
 });
 

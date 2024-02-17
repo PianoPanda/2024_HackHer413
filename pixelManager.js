@@ -88,18 +88,18 @@ export function scalePixelMatrix(matrix, newWidth, newHeight) {
     let scaledHeight = Math.floor(oldHeight / newHeight);
 
     let binaryMatrix = [];
-    for (let y = 0; y < newHeight; y++) {
+    for (let i = 0; i < newHeight; i++) {
         let row = [];
-        for (let x = 0; x < newWidth; x++) {
+        for (let j = 0; j < newWidth; j++) {
             let sum = 0;
             let count = 0;
-            for (let innerY = y * scaledHeight; innerY < (y + 1) * scaledHeight; innerY++) {
-                for (let innerX = x * scaledWidth; innerX < (x + 1) * scaledWidth; innerX++) {
+            
+            for (let innerI= i * scaledHeight; innerI < (i + 1) * scaledHeight; innerI++) {
+                for (let innerJ = j * scaledWidth; innerJ < (j + 1) * scaledWidth; innerJ++) {
 
-                    if (innerY < oldHeight && innerX < oldWidth) { // Check bounds
-                        sum += matrix[innerY][innerX];
+                    if (innerJ < oldHeight && innerI < oldWidth) {
+                        sum += matrix[innerJ][innerI];
                         count++;
-
                     }
                 }
             }
