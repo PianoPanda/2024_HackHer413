@@ -170,30 +170,23 @@ export function scalePixelMatrix(matrix, newHeight, newWidth) {
 			let sum = 0;
 			let count = 0;
 
-			// inner grid of pixels
-			for (
-				let innerI = i * scaledHeight;
-				innerI < (i + 1) * scaledHeight;
-				innerI++
-			) {
-				for (
-					let innerJ = j * scaledWidth;
-					innerJ < (j + 1) * scaledWidth;
-					innerJ++
-				) {
-					if (innerJ < oldHeight && innerI < oldWidth) {
-						sum += matrix[innerI][innerJ];
-						count++;
-					}
-				}
-			}
-			let average = sum / count;
-			row.push(average >= 0.5 ? 1 : 0);
-		}
-		binaryMatrix.push(row);
-	}
+            // inner grid of pixels
+            for (let innerI = i * scaledHeight; innerI < (i + 1) * scaledHeight; innerI++) {
+                for (let innerJ = j * scaledWidth; innerJ < (j + 1) * scaledWidth; innerJ++) {
 
-	return binaryMatrix;
+                    if (innerI < oldHeight && innerJ < oldWidth) {
+                        sum += matrix[innerI][innerJ];
+                        count++;
+                    }
+                }
+            }
+            let average = sum / count;
+            row.push(average >= 0.5 ? 1 : 0);
+        }
+        binaryMatrix.push(row);
+    }
+
+    return binaryMatrix;
 }
 
 /**
@@ -201,7 +194,8 @@ export function scalePixelMatrix(matrix, newHeight, newWidth) {
  * @param {Array} matrix - A 2D binary matrix representation of a black and white image
  */
 export function printMatrix(matrix) {
-	matrix.forEach((row) => {
-		console.log(row.join(""));
-	});
+    matrix.forEach(row => {
+    console.log(row.join(''));
+    });
+    console.log("------")
 }
