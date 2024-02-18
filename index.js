@@ -82,8 +82,8 @@ function dostuff(name, fd, whiteblack) {
   fs.writeFileSync(name, cal.toString())
 }
 
-for (let n=0; n<1; n++) {
-  dostuff(`white${n}.ical`, 100, 0)
+for (let n=0; n<150; n++) {
+  dostuff(`white${n}.ical`, n, 0)
 }
 // for (let n=0; n<40; n++) {
   // dostuff(`black${n}.ical`, n, 1)
