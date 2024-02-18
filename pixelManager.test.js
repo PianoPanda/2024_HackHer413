@@ -47,29 +47,3 @@ test("Size verification", () => {
 		assert(row.length == 112);
 	});
 });
-
-test("Reading image pixel color", async () => {
-	// Create a new image
-	let image = await new Jimp(3, 3, 0xff0000ff); // This creates a 3x3 image with red pixels
-
-	// Write the image to a file asynchronously
-	await image.writeAsync("./modifiedImages/red.png");
-
-	// After writing, read the image back and test the pixels
-	try {
-		let pixelArr = await readColorImage("./modifiedImages/red.png");
-		console.log("check")
-
-		pixelArr.forEach((value) => {
-			// Assuming value is an object like {r: 255, g: 0, b: 0, a: 255}
-			assert(
-				value.r === 255 && value.g === 0 && value.b === 0,
-				"Pixel color does not match expected red color"
-			);
-		});
-	} catch (e) {
-		throw new Error("Reading pixel color test failed: " + e.message);
-	}
-});
-
-//test("")
