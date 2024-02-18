@@ -6,3 +6,4 @@ credentials.json
 token.json
 
 bun.lockb
+*.ical
