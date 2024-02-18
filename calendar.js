@@ -72,6 +72,7 @@ export function writeBlockToICAL(frame, column, block, cal, white) {
 
   if (!((event.colorId != undefined) == (white == 0))) return
   
+<<<<<<< HEAD
   cal.createEvent({
     start: start,
     end: end,
@@ -90,4 +91,30 @@ export function writeBlockToICAL(frame, column, block, cal, white) {
 // c` stuff += "END:VEVENT\n"
 
   // return stuff
+=======
+}
+
+
+function writeFrameToICSs(blocks, frame) {
+  let white = ""
+  let black = ""
+
+  for (const block of blocks) {
+    writeBlock(frame, block, event => {
+      let stuff = "BEGIN:VEVENT\n"
+      const start = new Date(event.start.dateTime).getTime()
+      const end = new Date(event.end.dateTime).getTime()
+      //cal.addEvent("a"," "," ", start.toString(), end.toString);
+      stuff += `DTSTAMP:${start}\n`
+      stuff += `DTSTART:${start}\n`
+      stuff += `DTEND:${end}\n`
+      stuff += `SUMMART:${event.summary}\n`
+      stuff += "END:VEVENT\n"
+      if (event.colorId) black += stuff
+      else white += stuff
+    })
+  }
+
+  return [white, black]
+>>>>>>> f3091a4 (ics file in calendar.js)
 }
