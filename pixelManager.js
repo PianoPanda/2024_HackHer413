@@ -90,6 +90,7 @@ export function colorSimilarity(framePath) {
             let closestColor = findClosestColor(image.getPixel(x, y)); //image.getPixel(x, y) returns a RGB value
             // console.log(closestColor);
             row.push(COLORS.findIndex(color => color[0]==closestColor[0] && color[1]==closestColor[1] && color[2]==closestColor[2]).toString(16));
+			row.push(COLORS.findIndex(color => color[0]==closestColor[0] && color[1]==closestColor[1] && color[2]==closestColor[2]).toString(16));
             // color => color[0] == 0xD5 && color[1] == 0x00 && color[1] == 0x00
             //row.push(COLORS.findIndex(closestColor));
         }
